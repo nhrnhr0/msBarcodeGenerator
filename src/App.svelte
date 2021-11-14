@@ -2,12 +2,19 @@
 	
 	import Mustache from 'mustache'
 	import {price_template} from './price_template'
+	import {not_price_template} from './not_price_template'
 	let product_name;
 	let product_barcode;
 	
 	let product_price;
 	function download() {
-		var output = Mustache.render(price_template, {product_name: product_name, product_barcode:product_barcode, product_price: product_price});
+		console.log(product_name, product_barcode, product_price);
+		var output = '';
+		if(product_price) {
+			var output = Mustache.render(price_template, {product_name: product_name, product_barcode:product_barcode, product_price: product_price});
+		}else {
+			var output = Mustache.render(not_price_template, {product_name: product_name, product_barcode:product_barcode});
+		}
 		var blob = new Blob([output], {type: "text/plain;charset=utf-8"});
 		downloadBlob(blob,`${product_name}.label`);
 
